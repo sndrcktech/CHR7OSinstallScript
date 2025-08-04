@@ -3,7 +3,7 @@
 set -e
 
 # Устанавливаем необходимые пакеты
-sudo apt update && apt install -y kpartx util-linux coreutils wget unzip
+sudo apt update && sudo apt install -y kpartx util-linux coreutils wget unzip
 
 # Определяем интерфейс с default route
 INTERFACE=$(ip route | grep default | awk '{print $5}')
@@ -52,8 +52,7 @@ echo "[+] Сеть: $NETWORK"
 echo "[+] Gateway: $GATEWAY"
 echo "[+] Диск: $DISK"
 
-IMG_URL="https://download.mikrotik.com/routeros/7.13.2/chr-7.13.2.img.zip"
-IMG_FILE="chr-7.13.2.img"
+IMG_URL="https://download.mikrotik.com/routeros/7.13.2/chr-7.13.2.img.zip"IMG_FILE="chr-7.13.2.img"
 MOUNT_DIR="/mnt/chrimg"
 
 echo "[+] Скачиваем CHR образ..."
@@ -63,7 +62,7 @@ echo "[+] Распаковываем образ..."
 sudo unzip -o chr.img.zip
 
 echo "[+] Создаём loop-устройство и маппим разделы..."
-LOOPDEV=$(losetup --show -f $IMG_FILE)
+LOOPDEV=$(sudo losetup --show -f $IMG_FILE)
 sudo kpartx -av $LOOPDEV
 
 PART_DEV="/dev/mapper/$(basename $LOOPDEV)p1"
@@ -75,23 +74,21 @@ sudo mount $PART_DEV $MOUNT_DIR
 echo "[+] Патчим autorun.scr..."
 sudo rm -f $MOUNT_DIR/autorun.scr
 
-sudo cat > $MOUNT_DIR/autorun.scr <<EOF
+#sudo cat > $MOUNT_DIR/autorun.scr <<EOF
+sudo tee $MOUNT_DIR/autorun.scr > /dev/null <<EOF
 # MikroTik autorun.scr auto-patched
 user admin password=123456
 interface ethernet set [find default-name=ether1] disabled=no
 ip address add address=${IPADDR}/${CIDR} interface=ether1 network=${NETWORK}
 ip route add gateway=${GATEWAY}
-
 /ip service
 set telnet disabled=yes
 set ftp disabled=yes
 set www disabled=yes
 set api disabled=yes
 set api-ssl disabled=yes
-
 /ip neighbor discovery-settings
 set discover-interface-list=none
-
 /tool mac-server
 set allowed-interface-list=none
 /tool mac-server mac-winbox
