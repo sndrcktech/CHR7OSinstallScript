@@ -52,7 +52,8 @@ echo "[+] Сеть: $NETWORK"
 echo "[+] Gateway: $GATEWAY"
 echo "[+] Диск: $DISK"
 
-IMG_URL="https://download.mikrotik.com/routeros/7.13.2/chr-7.13.2.img.zip"IMG_FILE="chr-7.13.2.img"
+IMG_URL="https://download.mikrotik.com/routeros/7.13.2/chr-7.13.2.img.zip"
+IMG_FILE="chr-7.13.2.img"
 MOUNT_DIR="/mnt/chrimg"
 
 echo "[+] Скачиваем CHR образ..."
