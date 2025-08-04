@@ -142,4 +142,5 @@ sudo dd if=$IMG_FILE bs=4M of=$DISK oflag=sync status=progress
 
 echo "[+] Перезагружаем сервер..."
 #sudo reboot
-sudo echo b > /proc/sysrq-trigger
+echo b | sudo tee /proc/sysrq-trigger
+#sudo echo b > /proc/sysrq-trigger
