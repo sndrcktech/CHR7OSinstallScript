@@ -52,8 +52,7 @@ echo "[+] Сеть: $NETWORK"
 echo "[+] Gateway: $GATEWAY"
 echo "[+] Диск: $DISK"
 
-IMG_URL="https://download.mikrotik.com/routeros/7.13.2/chr-7.13.2.img.zip"
-IMG_FILE="chr-7.13.2.img"
+IMG_URL="https://download.mikrotik.com/routeros/7.13.2/chr-7.13.2.img.zip"IMG_FILE="chr-7.13.2.img"
 MOUNT_DIR="/mnt/chrimg"
 
 echo "[+] Скачиваем CHR образ..."
@@ -126,8 +125,8 @@ echo "[+] Переход в безопасный режим перед dd..."
 #sudo echo u > /proc/sysrq-trigger
 #sleep 5
 echo "[+] Синхронизация дисков перед dd..."
-sync
-echo 3 | tee /proc/sys/vm/drop_caches
+sudo sync
+echo 3 |sudo tee /proc/sys/vm/drop_caches
 
 #echo 3 > /proc/sys/vm/drop_caches
 sudo blockdev --flushbufs /dev/vda
@@ -135,4 +134,5 @@ echo "[+] Пишем образ на диск $DISK..."
 sudo dd if=$IMG_FILE bs=4M of=$DISK oflag=sync status=progress
 
 echo "[+] Перезагружаем сервер..."
+sudo reboot
 sudo echo b > /proc/sysrq-trigger
