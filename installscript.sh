@@ -129,9 +129,9 @@ echo "[+] Переход в безопасный режим перед dd..."
 #sleep 5
 echo "[+] Синхронизация дисков перед dd..."
 sudo sync
-sync
-echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
-blockdev --flushbufs /dev/vda
+#sync
+echo 5 | sudo tee /proc/sys/vm/drop_caches > /dev/null
+sudo blockdev --flushbufs /dev/vda
 
 #echo 3 | sudo tee /proc/sys/vm/drop_caches
 
@@ -141,5 +141,5 @@ echo "[+] Пишем образ на диск $DISK..."
 sudo dd if=$IMG_FILE bs=4M of=$DISK oflag=sync status=progress
 
 echo "[+] Перезагружаем сервер..."
-sudo reboot
+#sudo reboot
 sudo echo b > /proc/sysrq-trigger
