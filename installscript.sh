@@ -122,9 +122,13 @@ sudo losetup -d $LOOPDEV
 sudo rmdir $MOUNT_DIR
 
 echo "[+] Переход в безопасный режим перед dd..."
-sudo echo u > /proc/sysrq-trigger
-sleep 5
 
+#sudo echo u > /proc/sysrq-trigger
+#sleep 5
+echo "[+] Синхронизация дисков перед dd..."
+sync
+echo 3 > /proc/sys/vm/drop_caches
+blockdev --flushbufs /dev/vda
 echo "[+] Пишем образ на диск $DISK..."
 sudo dd if=$IMG_FILE bs=4M of=$DISK oflag=sync status=progress
 
