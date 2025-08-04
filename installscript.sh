@@ -124,14 +124,14 @@ sudo losetup -d $LOOPDEV
 sudo rmdir $MOUNT_DIR
 
 echo "[+] Переход в безопасный режим перед dd..."
-
+sudo blockdev --flushbufs /dev/vda
 #sudo echo u > /proc/sysrq-trigger
 #sleep 5
 echo "[+] Синхронизация дисков перед dd..."
 sudo sync
 #sync
-echo 5 | sudo tee /proc/sys/vm/drop_caches > /dev/null
-sudo blockdev --flushbufs /dev/vda
+sudo echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
+
 
 #echo 3 | sudo tee /proc/sys/vm/drop_caches
 
