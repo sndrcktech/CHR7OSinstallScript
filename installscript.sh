@@ -126,10 +126,14 @@ echo "[+] Переход в безопасный режим перед dd..."
 #sleep 5
 echo "[+] Синхронизация дисков перед dd..."
 sudo sync
-echo 3 |sudo tee /proc/sys/vm/drop_caches
+sync
+echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
+blockdev --flushbufs /dev/vda
+
+#echo 3 | sudo tee /proc/sys/vm/drop_caches
 
 #echo 3 > /proc/sys/vm/drop_caches
-sudo blockdev --flushbufs /dev/vda
+#sudo blockdev --flushbufs /dev/vda
 echo "[+] Пишем образ на диск $DISK..."
 sudo dd if=$IMG_FILE bs=4M of=$DISK oflag=sync status=progress
 
